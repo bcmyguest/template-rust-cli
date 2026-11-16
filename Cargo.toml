@@ -1,0 +1,29 @@
+[package]
+name = "template-rust-cli"
+version = "0.1.0"
+edition = "2024"
+description = "__DESCRIPTION__"
+license = "Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/bcmyguest/template-rust-cli"
+keywords = []
+categories = []
+exclude = [".github/", ".pre-commit-config.yaml", "cliff.toml", "scripts/"]
+
+# Logic lives in the library, where tests reach it without a terminal;
+# main.rs only parses arguments and prints.
+[lib]
+name = "template_rust_cli"
+path = "src/lib.rs"
+
+[[bin]]
+name = "template-rust-cli"
+path = "src/main.rs"
+
+[dependencies]
+
+[dev-dependencies]
+
+[profile.release]
+strip = true
+lto = true
