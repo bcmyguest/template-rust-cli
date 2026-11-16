@@ -35,6 +35,8 @@ git ls-files | { grep -F -e "$tpl" -e "$TPL_SNAKE" || true; } | while read -r pa
     mkdir -p "$(dirname "$new")"
     git mv "$path" "$new"
 done
+# git mv leaves emptied directories behind.
+find . -path ./.git -prune -o -type d -empty -print | xargs -r rmdir -p 2>/dev/null || true
 # Drop the template-only README section.
 perl -0pi -e 's/<!-- template:start -->.*?<!-- template:end -->\n?//s' README.md
 git rm -q scripts/init.sh
