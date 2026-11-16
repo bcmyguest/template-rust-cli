@@ -29,7 +29,7 @@ git ls-files -z | grep -zv '^scripts/init\.sh$' | xargs -0 perl -pi -e '
     s/bcmyguest/$ENV{OWNER}/g;
 '
 # Rename tracked paths that carry the template name.
-git ls-files | grep -F -e "$tpl" -e "$TPL_SNAKE" | while read -r path; do
+git ls-files | { grep -F -e "$tpl" -e "$TPL_SNAKE" || true; } | while read -r path; do
     new=${path//$tpl/$NAME}
     new=${new//$TPL_SNAKE/$SNAKE}
     mkdir -p "$(dirname "$new")"
