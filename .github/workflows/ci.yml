@@ -30,8 +30,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # init.sh deletes itself, and it rewrites every other tracked file, so its
+      # presence is the only check it cannot edit away.
       - run: |
-          if git grep -nE 'template-rust-cli|template_rust_cli|TEMPLATE_RUST_CLI|__DESCRIPTION__'; then
-            echo "::error::template placeholders remain; run scripts/init.sh <name> \"<description>\""
+          if [ -e scripts/init.sh ]; then
+            echo "::error::run scripts/init.sh <name> \"<description>\" first"
             exit 1
           fi
