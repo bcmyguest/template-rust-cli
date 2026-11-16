@@ -28,6 +28,13 @@ git ls-files -z | grep -zv '^scripts/init\.sh$' | xargs -0 perl -pi -e '
     s/__DESCRIPTION__/$ENV{DESC}/g;
     s/bcmyguest/$ENV{OWNER}/g;
 '
+# Rename tracked paths that carry the template name.
+git ls-files | grep -F -e "$tpl" -e "$TPL_SNAKE" | while read -r path; do
+    new=${path//$tpl/$NAME}
+    new=${new//$TPL_SNAKE/$SNAKE}
+    mkdir -p "$(dirname "$new")"
+    git mv "$path" "$new"
+done
 # Drop the template-only README section.
 perl -0pi -e 's/<!-- template:start -->.*?<!-- template:end -->\n?//s' README.md
 git rm -q scripts/init.sh
